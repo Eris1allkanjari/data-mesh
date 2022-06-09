@@ -51,6 +51,10 @@ run-docker: ## Run the demo in Docker
 	@echo ${MAKE_DIR} , ${SERVICE_ACCOUNT_ID} ,${VERSION}
 	@docker run -it --rm -p 8080:8080 -v ${MAKE_DIR}stack-configs/java-service-account-${SERVICE_ACCOUNT_ID}.config:/java-service-account-${SERVICE_ACCOUNT_ID}.config:ro cnfldemos/data-mesh-demo:${VERSION} --spring.config.additional-location=file:/java-service-account-${SERVICE_ACCOUNT_ID}.config
 
+.PHONY: run-local
+run-local: 
+	@cd ./client ; yarn ; yarn dev
+
 .PHONY: data-mesh-from-source
 data-mesh-from-source: ## Creates a new Data Mesh in Confluent Cloud then builds and runs the demo
 	@./scripts/create-data-mesh.sh
