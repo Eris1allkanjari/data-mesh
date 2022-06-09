@@ -43,23 +43,21 @@ view activeUseCaseKey model =
 dataProductCreationIntro : String
 dataProductCreationIntro =
     """
-### Create an App Using Data Products
+### Krijo nje aplikacion duke perdorur produktet e te dhenave
 
-*Role: App Developer*
+*Roli: Zhvillues aplikacioni*
 
-Once you have identified the necessary data products (and registered as a consumer on each one), you can then build your app which will consume events from each registered data product, perform any necessary business logic, and optionally emit any new events.
+Pas identifikimit te produkteve te dhenave te nevojshem ,mund te ndertojme nje aplikacion i cili do konsumoj evente nga secili produkt te dhenash i regjistruar,performoj logjiken e nevojshme te biznesit, dhe nese eshte e nevojshme te krijoje evente te reja.
 
-This tab contains several sample business use-cases that illustrate the consumption and usage of the pre-published data products. Click on one of the samples to see the details of the application.
-    """
-
+Ky tab permban disa use-case per biznesin qe demostrojne konsumimin dhe perdorimin e produkteve te dhenave te pa publikuar.
+"""
 
 dataProductCreationOutro : String
 dataProductCreationOutro =
     """
-Note:
-- ksqlDB is used for demonstration purposes but you can use any language to consume data products
-- Any events emitted by your app remain within the app's domain
-- You can publish your app's output as a data product for others to use from the "Manage Data Products" tab
+Shenime:
+- ksqlDB pedoret per demostrim , por mund te perdoret cdo gjuhe e afte per te konsumuar produkte te dhenash
+- Cdo event i krijuar nga aplikacioni do qendroje brenda domain te aplikacionit
     """
 
 
@@ -67,8 +65,8 @@ useCasesView : Maybe UseCaseName -> Dict UseCaseName UseCase -> Html Msg
 useCasesView activeUseCaseKey useCases =
     div []
         [ h4 []
-            [ text "Sample Business Use-Cases"
-            , tooltip "There are many ways to use and create data products. These business use-cases illustrate consuming both data products and event streams that are internal to the domain"
+            [ text "Shembuj te use-cases te biznesit"
+            , tooltip "Keto use-cases tregojne konsumimin e produkteve te dhenave dhe event streams"
             ]
         , table
             [ UIKit.table
@@ -103,12 +101,12 @@ useCasesDetail : Maybe UseCase -> WebData UseCaseName -> Html Msg
 useCasesDetail mUseCase executeUseCaseResult =
     div []
         [ h4 []
-            [ text "Application Information"
-            , tooltip "These sample applications all use ksqlDB for the sake of the prototype. You are free to use any technology to consume and use these data products, from monolithic consumers, to event-driven microservices, to batch-based jobs. You can then in turn emit new data to its own event stream, with may also become its own data product"
+            [ text "Informacion per aplikacionin"
+            , tooltip "ksqlDB pedoret per demostrim , por mund te perdoret cdo gjuhe e afte per te konsumuar produkte te dhenash"
             ]
         , case mUseCase of
             Nothing ->
-                i [] [ text "Select a use case from the table on the left." ]
+                i [] [ text "Zgjidh nje use-case nga tabela ne te majte." ]
 
             Just useCase ->
                 table
@@ -124,14 +122,14 @@ useCasesDetail mUseCase executeUseCaseResult =
                                     , td [] [ content ]
                                     ]
                             )
-                            [ ( "Title", text useCase.title )
-                            , ( "Description", text useCase.description )
-                            , ( "Name", text (unUseCaseName useCase.name) )
-                            , ( "Inputs", text useCase.inputs )
-                            , ( "Output Topic"
+                            [ ( "Titulli", text useCase.title )
+                            , ( "Pershkrimi", text useCase.description )
+                            , ( "Emri", text (unUseCaseName useCase.name) )
+                            , ( "Inputet", text useCase.inputs )
+                            , ( "Output"
                               , text useCase.outputTopic
                               )
-                            , ( "ksqlDB Statement"
+                            , ( "Query ksqlDB"
                               , pre [ style "max-height" "300px" ]
                                     [ code [] [ text useCase.ksqlDbCommand ] ]
                               )
@@ -150,10 +148,10 @@ useCasesDetail mUseCase executeUseCaseResult =
 
             ( Just _, Success _ ) ->
                 div []
-                    [ text "Your stream has been created."
+                    [ text "Stream u krijua."
                     , text " "
-                    , a [ href (routeToString Manage) ] [ text "Go here" ]
-                    , text " to review and publish it as a data product."
+                    , a [ href (routeToString Manage) ] [ text "Shko ketu." ]
+                    , text " per te pare dhe publikuar produktin e te dhenave."
                     ]
 
             ( Just useCase, _ ) ->
@@ -163,6 +161,6 @@ useCasesDetail mUseCase executeUseCaseResult =
                     , UIKit.marginBottom
                     , onClick (ExecuteUseCase useCase.name)
                     ]
-                    [ text "Execute this ksqlDB statement"
+                    [ text "Ekzekuto query e ksqlDB"
                     ]
         ]

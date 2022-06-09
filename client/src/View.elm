@@ -22,9 +22,7 @@ view : Model -> Document Msg
 view model =
     { title = "Data Mesh"
     , body =
-        [ headerView model.flags.staticImages.logoPath
-        , mainView model
-        , footerView model.auditLogModel
+        [  mainView model
         , Dialog.view
             (Maybe.map (View.Manage.publishDialog model.publishFormResult) model.publishForm)
         , Dialog.view
@@ -55,10 +53,10 @@ mainView model =
             [ ul
                 [ UIKit.tab ]
                 (List.map (tabView model.activeView)
-                    [ ( Landing, "Data Mesh Home" )
-                    , ( Discover Nothing, "1) Explore Data Products" )
-                    , ( Create Nothing, "2) Create Apps Using Data Products" )
-                    , ( Manage, "3) Publish Data Products" )
+                    [ ( Landing, "Data Mesh" )
+                    , ( Discover Nothing, "1) Eksploro produktet e te dhenave" )
+                    , ( Create Nothing, "2) Krijo aplikacione duke perdorur produktet e te dhenave" )
+                    , ( Manage, "3) Publiko produkte te dhenash" )
                     ]
                 )
             , case model.activeView of
@@ -91,26 +89,26 @@ notFoundView =
     h3 [] [ text "Not Found" ]
 
 
-footerView : AuditLogModel -> Html Msg
-footerView auditLogModel =
-    footer
-        (class "audit-log"
-            :: (if auditLogModel.minimised then
-                    [ class "audit-log-minimised" ]
+-- footerView : AuditLogModel -> Html Msg
+-- footerView auditLogModel =
+--     footer
+--         (class "audit-log"
+--             :: (if auditLogModel.minimised then
+--                     [ class "audit-log-minimised" ]
 
-                else
-                    []
-               )
-        )
-        [ button
-            [ UIKit.button
-            , UIKit.buttonSecondary
-            , class "audit-log-switch"
-            , onClick ToggleAuditMinimised
-            ]
-            [ text "Audit Log" ]
-        , auditLogMsgsView auditLogModel.messages
-        ]
+--                 else
+--                     []
+--                )
+--         )
+--         [ button
+--             [ UIKit.button
+--             , UIKit.buttonSecondary
+--             , class "audit-log-switch"
+--             , onClick ToggleAuditMinimised
+--             ]
+--             [ text "Audit Log" ]
+--         , auditLogMsgsView auditLogModel.messages
+--         ]
 
 
 auditLogMsgsId : String

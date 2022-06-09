@@ -37,12 +37,12 @@ view activeStreamKey model =
                         [ text
                             (case model.actuatorInfo of
                                 Success info ->
-                                    "Data Products available for the Analytics Domain"
+                                    "Produktet e te dhenave per Domain Analytics"
 
                                 _ ->
-                                    "Data Products available"
+                                    "Produktet e te dhenave"
                             )
-                        , tooltip "Discover the data products that are publicly visible to your domain"
+                        , tooltip "Zbulo produktet e te dhenave qe jane publike per domain tuaj"
                         ]
                     , Table.view
                         (tableConfig activeStreamKey)
@@ -54,8 +54,8 @@ view activeStreamKey model =
                     ]
                 , div [ class "discover-detail" ]
                     [ h4 []
-                        [ text "Data Products Detail"
-                        , tooltip "Contains all the relevant info about your data products. This information is intended to help you identify the data products relevant to your business use-case"
+                        [ text "Detajet e produktit te dhenave"
+                        , tooltip "Permban te gjithe te dhenat e nevojshme per produktine te dhenave."
                         ]
                     , streamDetailView
                         (RemoteData.toMaybe model.actuatorInfo)
@@ -71,14 +71,15 @@ view activeStreamKey model =
 discoveryIntro : String
 discoveryIntro =
     """
-### Discover data products you can consume
+### Zbulo produkte te dhenash te cilat mund ti konsumosh
 
-*Role: Prospective Consumer*
+*Roli: Konsumator i mundshem*
 
-This tab lets you explore the data products available to you. Data products are published from multiple domains, and finding the ones you need is a necessary step for building a new application. In this tab, you can:
-  - Explore data products
-  - View descriptions, schemas, and other details
-  - Identify the data products needed for your application
+Ky tab mundeson te eksplorojme produktet e te dhenave.Produktet e te Dhenave mund te publikohen nga domain te ndryshem, dhe gjetja e atyre qe ju duhen eshte e nevojshme per ndertimin e nje aplikacioni te ri.
+Ne kete tab mund te :
+  - Eksplorojme produktet e te dhenave
+  - Shikojme pershkrime,skema si dhe detaje te tjera
+  - Identifikojme produktet e te dhenave te nevojshme per aplikacionin tone
 
 """
 
@@ -86,11 +87,7 @@ This tab lets you explore the data products available to you. Data products are 
 discoveryOutro : String
 discoveryOutro =
     """
-Important functions for consumers that are not included in this prototype:
-  - Register your to-be-built application as a consumer of the data product
-  - Request access to sensitive data products, such as those containing PII
-  \t- The request will need to be approved by the appropriate team
-  - Communicate with the producers and consumers of the data product
+
     """
 
 
@@ -113,12 +110,12 @@ tableConfig activeStreamKey =
         { toId = .qualifiedName >> unQualifiedName
         , toMsg = SetDataProductsTableState
         , columns =
-            [ Table.stringColumn "Name" .name
+            [ Table.stringColumn "Emri" .name
             , Table.stringColumnWithAttributes
-                "Description"
+                "Pershkrimi"
                 [ class "description" ]
                 .description
-            , Table.stringColumn "Owner" .owner
+            , Table.stringColumn "Pronari" .owner
             ]
         , customizations =
             { defaultCustomizations
@@ -172,7 +169,7 @@ streamDetailView : Maybe ActuatorInfo -> Maybe Stream -> Html Msg
 streamDetailView mActuatorInfo mStream =
     case mStream of
         Nothing ->
-            i [] [ text "Select a product from the table on the left." ]
+            i [] [ text "Zgjidh nje produkt nga tabela ne te majte." ]
 
         Just (StreamDataProduct dataProduct) ->
             div []
@@ -188,10 +185,10 @@ streamDetailView mActuatorInfo mStream =
                                 , td [] [ content ]
                                 ]
                         )
-                        [ ( "Name",  text dataProduct.name )
+                        [ ( "Emri",  text dataProduct.name )
                         , ( "Domain",  text (unDomain dataProduct.domain) )
-                        , ( "Owner",  text dataProduct.owner )
-                        , ( "Quality", text (showProductQuality dataProduct.quality) )
+                        , ( "Pronari",  text dataProduct.owner )
+                        , ( "Kualiteti", text (showProductQuality dataProduct.quality) )
                         , ( "SLA", text (showProductSla dataProduct.sla) )
                         , ( "Schema"
                           , pre []
@@ -207,9 +204,9 @@ streamDetailView mActuatorInfo mStream =
                         div [ UIKit.margin, UIKit.width_1_1 ]
                             (List.intersperse (text " ")
                                 (List.map (linkButton actuatorInfo.hostedMode)
-                                    [ ( "Topic Detail", dataProduct.urls.portUrl, TopicScreenshot )
-                                    , ( "Data Lineage", dataProduct.urls.lineageUrl, LineageScreenshot )
-                                    , ( "Export", dataProduct.urls.exportUrl, ExportScreenshot )
+                                    [ ( "Detaje te topic", dataProduct.urls.portUrl, TopicScreenshot )
+                                    , ( "Prejardhja e te dhenave", dataProduct.urls.lineageUrl, LineageScreenshot )
+                                    , ( "Eksporto", dataProduct.urls.exportUrl, ExportScreenshot )
                                     ]
                                 )
                             )

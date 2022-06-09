@@ -48,6 +48,7 @@ run-docker: CONFIG_FILE ?= ${MAKE_DIR}stack-configs/java-service-account-${SERVI
 run-docker: VERSION ?= $(call get_prototype_version)
 run-docker: ## Run the demo in Docker
 	@:$(call check_defined, CONFIG_FILE, config file)
+	@echo ${MAKE_DIR} , ${SERVICE_ACCOUNT_ID} ,${VERSION}
 	@docker run -it --rm -p 8080:8080 -v ${MAKE_DIR}stack-configs/java-service-account-${SERVICE_ACCOUNT_ID}.config:/java-service-account-${SERVICE_ACCOUNT_ID}.config:ro cnfldemos/data-mesh-demo:${VERSION} --spring.config.additional-location=file:/java-service-account-${SERVICE_ACCOUNT_ID}.config
 
 .PHONY: data-mesh-from-source

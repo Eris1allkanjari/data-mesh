@@ -30,8 +30,8 @@ view model =
                 [ text "Kafka Topics"
                 , p []
                     [ small []
-                        [ text "Publishable as data products"
-                        , tooltip "These event streams are fully within your domain, and can be published as event streams. Doing so will expose them publicly to all other domains in your org"
+                        [ text "Te publikueshme si produkt te dhenash"
+                        , tooltip "Keto event streams bejne pjese ne domain, dhe mund te publikohen si event streams.Ky veprim do ekspozoje keta event streams ndaj te gjithe organizates tuaj."
                         ]
                     ]
                 ]
@@ -77,7 +77,7 @@ splitStreamTablesView dataProductsTableState ( streams, actuatorInfo ) =
             , caption = Nothing
             }
             ourStreams
-        , h4 [] [ text "Data Products from other domains", tooltip "These are data products that have been published from other domains and are owned by other teams. You cannot perform any management operations on them as you do not have the necessary permissions" ]
+        , h4 [] [ text "Produkte te Dhenash nga domain te tjere", tooltip "Keta jane produktet e te dhenave qe jane publikuar nga domain ose skuadra te tjera.Duke qene se nuk kemi te drejtat e nevojshme, nuk mund ti modifikojme ata." ]
         , showTableUnlessEmpty
             { showControls = False
             , caption = Nothing
@@ -89,24 +89,20 @@ splitStreamTablesView dataProductsTableState ( streams, actuatorInfo ) =
 manageIntro : String
 manageIntro =
     """
-### Publish Data Products to the Data Mesh
+### Publiko Produktet e te Dhenave ne Data Mesh
 
-*Role: Data Product Owner*
+*Roli: Pronari i Produktit te Dhenave*
 
-This tab allows you to manage the data products within your domain. There are two main tables:
-- Your domain's Kafka Topics, that can be published as Data Products
-- Data Products available to you from all domains
-- This page only shows Kafka Topics based data products. A full implementation would also show data products from other APIs
+Ky tab lejon te menaxhojme produktet e te dhenave ne domain.Kemi dy tabela kryesore:
+- Kafka Topics te domain, te cilat mund te publikohen si Produkte te Dhenash
+- Produktet e te Dhenave te ofruara nga cdo domain
+- Kjo faqje tregon vetem produktet e te dhenave te bazuara ne Kafka Topics. Nje implementim me i thelluar duhet te lejonte dhe produkte te dhenash nga API te tjera.
 """
 
 
 manageOutro : String
 manageOutro =
     """
-Important functions of this tab that are not included in this prototype:
-  - Deprecate a data product, such that only existing consumers can continue to use it
-  - Issue a warning if you try to unregister a data product being consumed by an app
-  - Specify consumer access permission requirements
     """
 
 
@@ -123,7 +119,7 @@ tableConfig { showControls, caption } =
         , toMsg = SetDataProductsTableState
         , columns =
             [ Table.stringColumnWithAttributes
-                "Name"
+                "Emri"
                 [ UIKit.width_1_10 ]
                 getStreamName
             , Table.stringColumnWithAttributes
@@ -131,15 +127,15 @@ tableConfig { showControls, caption } =
                 [ UIKit.width_1_10 ]
                 (getStreamDomain >> Maybe.map unDomain >> withDefault "-")
             , Table.stringColumnWithAttributes
-                "Description"
+                "Pershkrimi"
                 [ UIKit.width_2_10 ]
                 (getStreamDescription >> withDefault "-")
             , Table.stringColumnWithAttributes
-                "Owner"
+                "Pronari"
                 [ UIKit.width_1_10 ]
                 (getStreamOwner >> withDefault "-")
             , Table.stringColumnWithAttributes
-                "Quality"
+                "Kualiteti"
                 [ UIKit.width_1_10 ]
                 (getStreamQuality >> maybe "-" showProductQuality)
             , Table.stringColumnWithAttributes
@@ -147,7 +143,7 @@ tableConfig { showControls, caption } =
                 [ UIKit.width_1_10 ]
                 (getStreamSLA >> maybe "-" showProductSla)
             , Table.veryCustomColumn
-                { name = "Action"
+                { name = "Veprimi"
                 , viewData =
                     \dataProduct ->
                         Table.HtmlDetails [ UIKit.width_2_10 ]
@@ -187,26 +183,26 @@ tableConfig { showControls, caption } =
 columnTooltips : String -> Maybe String
 columnTooltips name =
     case name of
-        "Name" ->
-            Just "The name may be a simple human-readable name, but can also be a full structured URI for explicitness"
+        "Emri" ->
+            Just "Mund te jete emer i thjeshte ose dhe nje URI e plote"
 
         "Domain" ->
-            Just "The domain that the data product belongs to, typically that of the producer service"
+            Just "Domain te cilit i perkete produkti i te dhenave"
 
         "Description" ->
-            Just "Plain-text, human-readable description of what this data product is for. Used primarily for discovery and search"
+            Just "Pershkrim i thjeshte se per cfare sherben ky produkt te dhenash."
 
         "Owner" ->
-            Just "The team responsible for producing, evolving, and maintaining the quality and SLAs of the data product"
+            Just "Skuadra qe ka si detyre prodhimin , evoluimin dhe mirembajtjen e kualitetit dhe SLA."
 
         "Quality" ->
-            Just "Represents the level of production readiness. An organization may impose quality requirements based on data management and risk needs"
+            Just "Tregon nivelin e gatishmerise per production"
 
         "SLA" ->
-            Just "Minimum level of service to expect in case of outages. Estimates a time to recovery based on a tier system"
+            Just "Niveli minimum i sherbimeve te pritura ne rast te gabimi"
 
         "Action" ->
-            Just "Allows you to publish or remove the data product from the data mesh. Note that a full-featured product may also include a 'deprecate' button, to enable migration off of deprecated data products"
+            Just "Te lejon te publikosh ose heqesh produkte te dhenash nga Data Mesh"
 
         _ ->
             Nothing
@@ -224,7 +220,7 @@ publishButton stream =
                 , UIKit.buttonDanger
                 , onClick (DeleteDataProduct dataProduct.qualifiedName)
                 ]
-                [ text "Remove from Mesh" ]
+                [ text "Fshij nga Data Mesh" ]
 
         StreamTopic topic ->
             button
@@ -233,7 +229,7 @@ publishButton stream =
                 , UIKit.buttonPrimary
                 , onClick (StartPublishDialog topic.qualifiedName)
                 ]
-                [ text "Add to Mesh" ]
+                [ text "Shto ne Data Mesh" ]
 
 
 publishDialog : WebData PublishFormResult -> PublishForm -> Dialog.Config Msg
@@ -255,13 +251,13 @@ publishDialog result model =
     , header =
         Just
             (div [ UIKit.modalTitle ]
-                [ text ("Publish: " ++ model.topic.name) ]
+                [ text ("Publiko: " ++ model.topic.name) ]
             )
     , body =
         Just
             (div []
                 [ p []
-                    [ text "Enter the required Data Product tags." ]
+                    [ text "Vendos taget e nevojshem per Produktin e te Dhenave." ]
                 , case result of
                     Failure err ->
                         errorView err
@@ -280,7 +276,7 @@ publishDialog result model =
                         , disabled (RemoteData.isLoading result)
                         ]
                         [ div []
-                            [ label [ UIKit.formLabel ] [ text "Owner" ]
+                            [ label [ UIKit.formLabel ] [ text "Pronari" ]
                             , div [ UIKit.formControls ]
                                 [ select
                                     ([ onInput (PublishFormMsg << PublishFormSetOwner)
@@ -302,7 +298,7 @@ publishDialog result model =
                                 ]
                             ]
                         , div []
-                            [ label [ UIKit.formLabel ] [ text "Description" ]
+                            [ label [ UIKit.formLabel ] [ text "Pershkrimi" ]
                             , div [ UIKit.formControls ]
                                 [ textarea
                                     [ UIKit.textarea
@@ -315,7 +311,7 @@ publishDialog result model =
                                 ]
                             ]
                         , radioButtonGroup
-                            "Quality"
+                            "Kualiteti"
                             (PublishFormMsg << PublishFormSetQuality)
                             showProductQuality
                             (Just model.quality)
@@ -347,7 +343,7 @@ publishDialog result model =
                                 [ for "terms_acknowledged"
                                 ]
                                 [ text " "
-                                , text "I acknowledge that by publishing this Data Product, I agree to the terms outlined in my SLA."
+                                , text "Pranoj qe duke publikouar kete Produkt te Dhenash,jam dakord me pikat e treguara ne SLA."
                                 ]
                             ]
                         ]
@@ -371,14 +367,14 @@ publishDialog result model =
                     , disabled (RemoteData.isLoading result)
                     , onClick AbandonPublishDialog
                     ]
-                    [ text "Cancel" ]
+                    [ text "Anullo" ]
                 , button
                     [ UIKit.button
                     , UIKit.buttonPrimary
                     , disabled (RemoteData.isLoading result || Result.isErr validationResult)
                     , onClick (PublishDataProduct model)
                     ]
-                    [ text "Publish" ]
+                    [ text "Publiko" ]
                 ]
             )
     }
